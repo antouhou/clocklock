@@ -32,7 +32,7 @@ function trackTime() {
                 return;
             }
             if (response && response.blocked) {
-                blockSite();
+                blockSite(response.cooldownRemaining || 0);
             }
         });
     } catch (e) {
@@ -51,7 +51,7 @@ function checkStatus() {
             if (chrome.runtime.lastError) return;
             
             if (response && response.blocked) {
-                blockSite();
+                blockSite(response.cooldownRemaining || 0);
             } else if (isBlocked) {
                 // Was blocked, now unblocked
                 window.location.reload();
@@ -63,9 +63,14 @@ function checkStatus() {
     }
 }
 
-function blockSite() {
+function blockSite(cooldownRemaining = 0) {
     if (document.body.getAttribute('data-clocklock-blocked') === 'true') {
         isBlocked = true;
+        // Update existing timer if present
+        const existingTimer = document.getElementById('clocklock-timer');
+        if (existingTimer && cooldownRemaining > 0) {
+            existingTimer.textContent = formatTime(cooldownRemaining);
+        }
         return;
     }
 
@@ -130,9 +135,22 @@ function blockSite() {
         max-width: 400px;
         line-height: 1.5;
     `;
+
+    const timer = document.createElement('div');
+    timer.id = 'clocklock-timer';
+    timer.textContent = formatTime(cooldownRemaining);
+    timer.style.cssText = `
+        margin-top: calc(var(--space-2) * 2);
+        font-size: 3rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+        letter-spacing: 0.05em;
+    `;
     
     container.appendChild(heading);
     container.appendChild(text);
+    container.appendChild(timer);
 
     document.head.appendChild(styleSheet);
     document.body.innerHTML = '';
@@ -142,4 +160,13 @@ function blockSite() {
     
     document.querySelectorAll('video').forEach(v => v.pause());
     document.querySelectorAll('audio').forEach(a => a.pause());
+}
+
+function formatTime(milliseconds) {
+    const totalSeconds = Math.ceil(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }

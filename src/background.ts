@@ -21,7 +21,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log(`[ClockLock] Received TRACK_TIME message from ${domain}...`);
         
         clockLock.trackTime(domain, delta)
-            .then(result => sendResponse(result))
+            .then(result => {
+                const cooldownRemaining = clockLock.getCooldownRemaining(domain);
+                sendResponse({ ...result, cooldownRemaining });
+            })
             .catch(err => {
                 console.error(err);
                 sendResponse({ blocked: false, error: err.message });
@@ -34,7 +37,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log(`[ClockLock] Received GET_STATUS message from ${message.payload.domain}...`);
         const { domain } = message.payload;
         const blocked = clockLock.isBlocked(domain);
-        sendResponse({ blocked });
+        const cooldownRemaining = clockLock.getCooldownRemaining(domain);
+        sendResponse({ blocked, cooldownRemaining });
         return false;
     }
 });
