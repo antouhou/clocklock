@@ -38,7 +38,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const { domain } = message.payload;
         const blocked = clockLock.isBlocked(domain);
         const cooldownRemaining = clockLock.getCooldownRemaining(domain);
-        sendResponse({ blocked, cooldownRemaining });
+        const rule = clockLock.getRule(domain);
+        const trackInBackground = rule?.trackInBackground ?? false;
+        sendResponse({ blocked, cooldownRemaining, trackInBackground });
         return false;
     }
 });

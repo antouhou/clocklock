@@ -8,6 +8,7 @@
     label: string;
     watchSeconds: number;
     blockSeconds: number;
+    trackInBackground: boolean;
   };
 
   let sites: SiteConfig[] = [];
@@ -28,7 +29,8 @@
       id: r.domain,
       label: r.domain,
       watchSeconds: Math.floor(r.timeLimit / 1000),
-      blockSeconds: Math.floor(r.cooldownDuration / 1000)
+      blockSeconds: Math.floor(r.cooldownDuration / 1000),
+      trackInBackground: r.trackInBackground
     }));
   }
 
@@ -64,7 +66,8 @@
     const newRule: Rule = {
         domain: id,
         timeLimit: 600 * 1000,
-        cooldownDuration: 1800 * 1000
+        cooldownDuration: 1800 * 1000,
+        trackInBackground: false
     };
 
     await clockLock.addRule(newRule);
@@ -80,7 +83,8 @@
     const rule: Rule = {
         domain: site.id,
         timeLimit: site.watchSeconds * 1000,
-        cooldownDuration: site.blockSeconds * 1000
+        cooldownDuration: site.blockSeconds * 1000,
+        trackInBackground: site.trackInBackground
     };
     
     await clockLock.addRule(rule);
@@ -168,7 +172,21 @@
           />
           <span class="suffix">seconds</span>
         </div>
-        <p class="help">How long the site stays blocked after your watch time ends.</p>
+        <p class="help">How long the site stays blocked after your watch time ends. Set 0 to disable.</p>
+      </div>
+
+      <div class="divider" role="separator" aria-hidden="true"></div>
+
+      <div class="field">
+        <label class="checkboxLabel">
+          <input
+            type="checkbox"
+            class="checkbox"
+            bind:checked={sites[selectedIndex].trackInBackground}
+          />
+          <span class="checkboxText">Track time in background tabs</span>
+        </label>
+        <p class="help">When enabled, time will be tracked even when the tab is not active.</p>
       </div>
     {:else}
       <div class="field">
@@ -206,6 +224,21 @@
           />
           <span class="suffix">seconds</span>
         </div>
+        <p class="help">Select a site to edit its limits.</p>
+      </div>
+
+      <div class="divider" role="separator" aria-hidden="true"></div>
+
+      <div class="field">
+        <label class="checkboxLabel">
+          <input
+            type="checkbox"
+            class="checkbox"
+            disabled
+            checked={false}
+          />
+          <span class="checkboxText">Track time in background tabs</span>
+        </label>
         <p class="help">Select a site to edit its limits.</p>
       </div>
     {/if}
@@ -459,9 +492,9 @@
 
   .button {
     appearance: none;
-    border: 1px solid color-mix(in srgb, var(--border) 95%, transparent);
-    background: color-mix(in srgb, var(--surface) 65%, var(--bg));
-    color: var(--muted);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: var(--accent);
+    color: var(--on-accent);
     border-radius: var(--radius-md);
     padding: 8px 12px;
     font-size: 12px;
@@ -470,8 +503,66 @@
     cursor: pointer;
   }
 
+  .button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--accent) 88%, white);
+  }
+
   .button:disabled {
     cursor: not-allowed;
-    opacity: 0.75;
+    opacity: 0.5;
+    border: 1px solid color-mix(in srgb, var(--border) 95%, transparent);
+    background: color-mix(in srgb, var(--surface) 65%, var(--bg));
+    color: var(--muted);
+  }
+
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-2);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .checkbox:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  }
+
+  .checkbox:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--on-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .checkboxText {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
   }
 </style>

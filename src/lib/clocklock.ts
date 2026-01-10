@@ -12,6 +12,16 @@ export class ClockLock {
 
   async init() {
     this.state = await this.storage.load();
+    
+    // Add default rule for YouTube if it doesn't exist
+    if (!this.getRule('youtube.com')) {
+      await this.addRule({
+        domain: 'youtube.com',
+        timeLimit: 0,
+        cooldownDuration: 0,
+        trackInBackground: false
+      });
+    }
   }
 
   get rules() {

@@ -2,6 +2,7 @@ export interface Rule {
   domain: string;
   timeLimit: number; // in milliseconds
   cooldownDuration: number; // in milliseconds
+  trackInBackground: boolean; // whether to track time when tab is in background
 }
 
 export interface SiteState {

@@ -4,13 +4,15 @@
 const domain = window.location.hostname.replace(/^www\./, '');
 const CHECK_INTERVAL_MS = 1000;
 let isBlocked = false;
+let trackInBackground = false; // Will be fetched from rule
 
 // Initial check
 checkStatus();
 
 // Start loop
 setInterval(() => {
-    if (document.hidden) return;
+    // Skip if page is hidden and we shouldn't track background
+    if (document.hidden && !trackInBackground) return;
     
     if (isBlocked) {
         checkStatus();
@@ -55,6 +57,11 @@ function checkStatus() {
             } else if (isBlocked) {
                 // Was blocked, now unblocked
                 window.location.reload();
+            }
+            
+            // Update trackInBackground setting from rule
+            if (response && response.trackInBackground !== undefined) {
+                trackInBackground = response.trackInBackground;
             }
         });
     } catch (e) {

@@ -18,13 +18,13 @@ describe('ClockLock', () => {
   });
 
   it('should add a rule', async () => {
-    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000 });
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000, trackInBackground: false });
     expect(clockLock.getRule('youtube.com')).toBeDefined();
     expect(clockLock.getRule('youtube.com')?.timeLimit).toBe(1000);
   });
 
   it('should track time and block when limit reached', async () => {
-    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000 });
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000, trackInBackground: false });
     
     // Track 500ms
     let result = await clockLock.trackTime('youtube.com', 500);
@@ -38,7 +38,7 @@ describe('ClockLock', () => {
   });
 
   it('should stay blocked during cooldown', async () => {
-    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000 });
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000, trackInBackground: false });
     await clockLock.trackTime('youtube.com', 1000); // Block it
     
     expect(clockLock.isBlocked('youtube.com')).toBe(true);
@@ -50,7 +50,7 @@ describe('ClockLock', () => {
   });
 
   it('should unblock and reset after cooldown', async () => {
-    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000 });
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000, trackInBackground: false });
     await clockLock.trackTime('youtube.com', 1000); // Block it
     
     // Advance time by 5001ms (more than cooldown)
@@ -68,7 +68,7 @@ describe('ClockLock', () => {
   });
   
   it('should persist rules and state', async () => {
-      await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000 });
+      await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 5000, trackInBackground: false });
       await clockLock.trackTime('youtube.com', 500);
       
       // Create new instance with same storage
@@ -80,7 +80,7 @@ describe('ClockLock', () => {
   });
 
   it('should not block when cooldownDuration is 0', async () => {
-    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 0 });
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 0, trackInBackground: false });
     
     // Track 1000ms (reaching the limit)
     let result = await clockLock.trackTime('youtube.com', 1000);
