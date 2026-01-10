@@ -5,7 +5,7 @@
 <main class="app">
   <header class="header">
     <div class="brand">
-      <img src="../assets/icon-48.svg" alt="TubeLock" class="logo" />
+      <img src="../assets/icon-48.svg" alt="ClockLock" class="logo" />
       <div class="brandText">
         <h1 class="appTitle">ClockLock</h1>
         <p class="tagline">Set time limits per site.</p>
@@ -18,27 +18,40 @@
 
 <style>
   :global(:root) {
-    --bg: #0b1220;
-    --surface: #0f1b2e;
-    --text: rgba(255, 255, 255, 0.92);
-    --muted: rgba(255, 255, 255, 0.68);
-    --border: rgba(255, 255, 255, 0.14);
-    --accent: #60a5fa;
+    /* Binance-ish dark greys + yellow accent */
+    --bg: #0b0e11;
+    --surface: #181a20;
+    --surface-2: #1e2329;
+    --text: #eaecef;
+    --muted: #848e9c;
+    --border: #2b3139;
+    --accent: #f0b90b;
+    --on-accent: #111827;
+
     --radius-lg: 14px;
     --radius-md: 12px;
-    --shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.22);
+    --shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.32);
+
+    --space-1: 6px;
+    --space-2: 10px;
+    --space-3: 14px;
   }
 
   :global(body) {
     margin: 0;
-    background: radial-gradient(1200px 420px at 30% 0%, rgba(96, 165, 250, 0.18), transparent 55%),
-      radial-gradient(900px 420px at 90% 30%, rgba(37, 99, 235, 0.18), transparent 55%),
-      var(--bg);
+    background: var(--bg);
     color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :global(*:focus-visible) {
+    outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+    outline-offset: 2px;
   }
 
   .app {
-    padding: 14px;
+    padding: var(--space-3);
     display: grid;
     gap: 12px;
   }
@@ -60,7 +73,7 @@
     height: 34px;
     flex: 0 0 auto;
     border-radius: 10px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
   }
 
   .brandText {

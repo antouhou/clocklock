@@ -1,6 +1,8 @@
 # ClockLock
 
-A browser extension built with Svelte 5 and TypeScript.
+ClockLock is an browser extension that let you set up cooldown periods afetr you've used a website for
+too long. For example, you can set up a rule that after you've spent 20 minutes on YouTube, you can't 
+open it for an hour. 
 
 ## Contributing
 

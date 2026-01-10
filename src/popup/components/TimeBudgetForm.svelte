@@ -179,9 +179,9 @@
 <style>
   .card {
     background: var(--surface);
-    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
     border-radius: var(--radius-lg);
-    padding: 14px;
+    padding: var(--space-3);
     box-shadow: var(--shadow-sm);
   }
 
@@ -234,7 +234,7 @@
     min-width: 0;
     appearance: none;
     border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+    background: var(--surface-2);
     color: var(--text);
     border-radius: var(--radius-md);
     padding: 10px 34px 10px 10px;
@@ -242,6 +242,10 @@
     font-weight: 600;
     letter-spacing: 0.2px;
     outline: none;
+  }
+
+  .select:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
   }
 
   .chevron {
@@ -257,10 +261,10 @@
   .iconButton {
     width: 38px;
     height: 38px;
-    border-radius: 12px;
-    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-    background: color-mix(in srgb, var(--accent) 14%, var(--surface));
-    color: color-mix(in srgb, var(--accent) 90%, var(--text));
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: var(--accent);
+    color: var(--on-accent);
     font-size: 18px;
     line-height: 1;
     font-weight: 700;
@@ -268,19 +272,18 @@
   }
 
   .iconButton:hover {
-    background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+    background: color-mix(in srgb, var(--accent) 88%, white);
   }
 
   .addRow {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
-    align-items: end;
+    align-items: stretch;
     margin: 2px 0 12px 0;
-    padding: 10px;
+    padding: var(--space-2);
     border-radius: var(--radius-lg);
     border: 1px dashed color-mix(in srgb, var(--border) 80%, transparent);
-    background: color-mix(in srgb, var(--surface) 74%, var(--bg));
+    background: var(--surface-2);
   }
 
   .addField {
@@ -290,10 +293,9 @@
   }
 
   .textInput {
-    width: 100%;
     min-width: 0;
     border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+    background: var(--surface);
     color: var(--text);
     border-radius: var(--radius-md);
     padding: 10px;
@@ -301,6 +303,10 @@
     font-weight: 600;
     letter-spacing: 0.2px;
     outline: none;
+  }
+
+  .textInput:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
   }
 
   .textInput::placeholder {
@@ -318,10 +324,10 @@
 
   .smallButton {
     appearance: none;
-    border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
-    background: color-mix(in srgb, var(--surface) 75%, var(--bg));
-    color: var(--text);
-    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: var(--radius-md);
     padding: 8px 10px;
     font-size: 12px;
     font-weight: 650;
@@ -329,20 +335,19 @@
     white-space: nowrap;
   }
 
-  @media (max-width: 360px) {
-    .addRow {
-      grid-template-columns: 1fr;
-      align-items: stretch;
-    }
-
-    .addActions {
-      justify-content: flex-end;
-    }
+  .smallButton:hover {
+    background: color-mix(in srgb, var(--accent) 86%, white);
   }
 
   .smallButton.secondary {
-    background: transparent;
-    color: var(--muted);
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 55%, var(--bg));
+    color: var(--text);
+  }
+
+  .smallButton.secondary:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+    background: color-mix(in srgb, var(--surface) 72%, var(--bg));
   }
 
   .field {
@@ -353,7 +358,7 @@
   .label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--text);
+    color: var(--muted);
   }
 
   .control {
@@ -364,7 +369,11 @@
     padding: 10px 10px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+    background: var(--surface-2);
+  }
+
+  .control:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
   }
 
   .input {
@@ -410,10 +419,10 @@
 
   .button {
     appearance: none;
-    border: 1px solid color-mix(in srgb, var(--accent) 65%, var(--border));
-    background: color-mix(in srgb, var(--accent) 14%, var(--surface));
-    color: color-mix(in srgb, var(--accent) 85%, var(--text));
-    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--border) 95%, transparent);
+    background: color-mix(in srgb, var(--surface) 65%, var(--bg));
+    color: var(--muted);
+    border-radius: var(--radius-md);
     padding: 8px 12px;
     font-size: 12px;
     font-weight: 650;
