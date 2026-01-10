@@ -78,4 +78,18 @@ describe('ClockLock', () => {
       expect(newClockLock.getRule('youtube.com')).toBeDefined();
       expect(newClockLock.getTimeLeft('youtube.com')).toBe(500);
   });
+
+  it('should not block when cooldownDuration is 0', async () => {
+    await clockLock.addRule({ domain: 'youtube.com', timeLimit: 1000, cooldownDuration: 0 });
+    
+    // Track 1000ms (reaching the limit)
+    let result = await clockLock.trackTime('youtube.com', 1000);
+    expect(result.blocked).toBe(false);
+    expect(clockLock.isBlocked('youtube.com')).toBe(false);
+    
+    // Continue tracking beyond the limit
+    result = await clockLock.trackTime('youtube.com', 500);
+    expect(result.blocked).toBe(false);
+    expect(clockLock.isBlocked('youtube.com')).toBe(false);
+  });
 });

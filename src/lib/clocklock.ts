@@ -66,7 +66,7 @@ export class ClockLock {
       console.log(`[ClockLock] Tracked time for ${domain}: ${siteState.timeSpent}ms`);
       
       let blocked = false;
-      if (siteState.timeSpent >= rule.timeLimit) {
+      if (siteState.timeSpent >= rule.timeLimit && rule.cooldownDuration > 0) {
           this.block(domain);
           blocked = true;
       }
@@ -99,6 +99,10 @@ export class ClockLock {
 
        const now = Date.now();
        const cooldownEnds = siteState.lastBlocked + rule.cooldownDuration;
+
+       if (rule.cooldownDuration == 0) {
+            return false;
+       }
        
        return now < cooldownEnds;
   }
