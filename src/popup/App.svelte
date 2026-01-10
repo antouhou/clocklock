@@ -1,8 +1,5 @@
 <script lang="ts">
   import TimeBudgetForm from './components/TimeBudgetForm.svelte';
-
-  let watchSeconds = 600;
-  let blockSeconds = 1800;
 </script>
 
 <main class="app">
@@ -11,12 +8,12 @@
       <img src="../assets/icon-48.svg" alt="TubeLock" class="logo" />
       <div class="brandText">
         <h1 class="appTitle">TubeLock</h1>
-        <p class="tagline">Limit YouTube. Take breaks.</p>
+        <p class="tagline">Set time limits per site.</p>
       </div>
     </div>
   </header>
 
-  <TimeBudgetForm bind:watchSeconds bind:blockSeconds />
+  <TimeBudgetForm />
 
   <footer class="footer">
     <span class="footerText">Settings UI only</span>
