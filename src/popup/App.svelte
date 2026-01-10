@@ -7,17 +7,13 @@
     <div class="brand">
       <img src="../assets/icon-48.svg" alt="TubeLock" class="logo" />
       <div class="brandText">
-        <h1 class="appTitle">TubeLock</h1>
+        <h1 class="appTitle">ClockLock</h1>
         <p class="tagline">Set time limits per site.</p>
       </div>
     </div>
   </header>
 
   <TimeBudgetForm />
-
-  <footer class="footer">
-    <span class="footerText">Settings UI only</span>
-  </footer>
 </main>
 
 <style>
