@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { clockLock } from '../../lib/instance.js';
+  import type { Rule } from '../../lib/types.js';
+
   type SiteConfig = {
     id: string;
     label: string;
@@ -6,12 +10,27 @@
     blockSeconds: number;
   };
 
-  let sites: SiteConfig[] = [
-    { id: 'youtube.com', label: 'youtube.com', watchSeconds: 600, blockSeconds: 1800 },
-    { id: 'tiktok.com', label: 'tiktok.com', watchSeconds: 300, blockSeconds: 1200 },
-  ];
+  let sites: SiteConfig[] = [];
+  let selectedId: string = '';
+  let isLoading = true;
 
-  let selectedId: string = sites[0]?.id ?? '';
+  onMount(async () => {
+    await clockLock.init();
+    refreshSites();
+    if (sites.length > 0) {
+      selectedId = sites[0].id;
+    }
+    isLoading = false;
+  });
+
+  function refreshSites() {
+    sites = clockLock.rules.map(r => ({
+      id: r.domain,
+      label: r.domain,
+      watchSeconds: Math.floor(r.timeLimit / 1000),
+      blockSeconds: Math.floor(r.cooldownDuration / 1000)
+    }));
+  }
 
   let isAdding = false;
   let newSiteLabel = '';
@@ -29,20 +48,42 @@
     newSiteLabel = '';
   }
 
-  function addSite() {
+  async function addSite() {
     const trimmed = newSiteLabel.trim();
     if (!trimmed) return;
 
     const id = trimmed.toLowerCase();
+    
+    // Check if exists in current UI list (which mirrors storage)
     if (sites.some((s) => s.id === id)) {
       selectedId = id;
       cancelAdd();
       return;
     }
 
-    sites = [...sites, { id, label: trimmed, watchSeconds: 600, blockSeconds: 1800 }];
+    const newRule: Rule = {
+        domain: id,
+        timeLimit: 600 * 1000,
+        cooldownDuration: 1800 * 1000
+    };
+
+    await clockLock.addRule(newRule);
+    refreshSites();
     selectedId = id;
     cancelAdd();
+  }
+
+  async function saveChanges() {
+    if (selectedIndex === -1) return;
+    const site = sites[selectedIndex];
+    
+    const rule: Rule = {
+        domain: site.id,
+        timeLimit: site.watchSeconds * 1000,
+        cooldownDuration: site.blockSeconds * 1000
+    };
+    
+    await clockLock.addRule(rule);
   }
 </script>
 
@@ -171,8 +212,7 @@
   </div>
 
   <div class="actions">
-    <button class="button" type="button" disabled aria-disabled="true">Save</button>
-    <span class="hint">Design only (logic not wired yet)</span>
+    <button class="button" type="button" on:click={saveChanges} disabled={selectedIndex === -1}>Save</button>
   </div>
 </section>
 
@@ -427,13 +467,11 @@
     font-size: 12px;
     font-weight: 650;
     letter-spacing: 0.2px;
-    cursor: not-allowed;
-    opacity: 0.75;
+    cursor: pointer;
   }
 
-  .hint {
-    font-size: 11px;
-    color: var(--muted);
-    white-space: nowrap;
+  .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
   }
 </style>
