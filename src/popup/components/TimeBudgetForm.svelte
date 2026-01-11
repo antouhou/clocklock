@@ -36,9 +36,38 @@
 
   let isAdding = false;
   let newSiteLabel = '';
+  let watchUnit: 'seconds' | 'minutes' | 'hours' = 'seconds';
+  let blockUnit: 'seconds' | 'minutes' | 'hours' = 'seconds';
 
   $: selectedIndex = sites.findIndex((s) => s.id === selectedId);
   $: selectedSite = selectedIndex === -1 ? undefined : sites[selectedIndex];
+
+  function convertFromSeconds(seconds: number, unit: 'seconds' | 'minutes' | 'hours'): number {
+    if (unit === 'minutes') return Math.round((seconds / 60) * 100) / 100;
+    if (unit === 'hours') return Math.round((seconds / 3600) * 100) / 100;
+    return seconds;
+  }
+
+  function convertToSeconds(value: number, unit: 'seconds' | 'minutes' | 'hours'): number {
+    if (unit === 'minutes') return Math.round(value * 60);
+    if (unit === 'hours') return Math.round(value * 3600);
+    return Math.round(value);
+  }
+
+  $: watchDisplayValue = selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].watchSeconds, watchUnit) : 0;
+  $: blockDisplayValue = selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].blockSeconds, blockUnit) : 0;
+
+  function updateWatchSeconds(value: number) {
+    if (selectedIndex !== -1) {
+      sites[selectedIndex].watchSeconds = convertToSeconds(value, watchUnit);
+    }
+  }
+
+  function updateBlockSeconds(value: number) {
+    if (selectedIndex !== -1) {
+      sites[selectedIndex].blockSeconds = convertToSeconds(value, blockUnit);
+    }
+  }
 
   function startAdd() {
     isAdding = true;
@@ -147,11 +176,19 @@
             class="input"
             type="number"
             min="0"
-            step="1"
-            inputmode="numeric"
-            bind:value={sites[selectedIndex].watchSeconds}
+            step="any"
+            inputmode="decimal"
+            value={watchDisplayValue}
+            on:input={(e) => updateWatchSeconds(parseFloat(e.currentTarget.value) || 0)}
           />
-          <span class="suffix">seconds</span>
+          <div class="unitSelectWrap">
+            <select class="unitSelect" bind:value={watchUnit}>
+              <option value="seconds">seconds</option>
+              <option value="minutes">minutes</option>
+              <option value="hours">hours</option>
+            </select>
+            <span class="unitChevron" aria-hidden="true">▾</span>
+          </div>
         </div>
         <p class="help">When this runs out, the selected site gets blocked.</p>
       </div>
@@ -166,11 +203,19 @@
             class="input"
             type="number"
             min="0"
-            step="1"
-            inputmode="numeric"
-            bind:value={sites[selectedIndex].blockSeconds}
+            step="any"
+            inputmode="decimal"
+            value={blockDisplayValue}
+            on:input={(e) => updateBlockSeconds(parseFloat(e.currentTarget.value) || 0)}
           />
-          <span class="suffix">seconds</span>
+          <div class="unitSelectWrap">
+            <select class="unitSelect" bind:value={blockUnit}>
+              <option value="seconds">seconds</option>
+              <option value="minutes">minutes</option>
+              <option value="hours">hours</option>
+            </select>
+            <span class="unitChevron" aria-hidden="true">▾</span>
+          </div>
         </div>
         <p class="help">How long the site stays blocked after your watch time ends. Set 0 to disable.</p>
       </div>
@@ -326,9 +371,10 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
+    font-size: 16px;
     color: var(--muted);
     pointer-events: none;
+    line-height: 1;
   }
 
   .iconButton {
@@ -466,6 +512,40 @@
     padding-left: 10px;
     border-left: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
     white-space: nowrap;
+  }
+
+  .unitSelectWrap {
+    position: relative;
+    padding-left: 10px;
+    border-left: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  }
+
+  .unitSelect {
+    appearance: none;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    padding-right: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .unitSelect:hover {
+    color: var(--accent);
+  }
+
+  .unitChevron {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--muted);
+    pointer-events: none;
+    line-height: 1;
   }
 
   .help {
