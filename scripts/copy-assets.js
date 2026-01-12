@@ -7,7 +7,6 @@ const root = join(__dirname, '..');
 
 const filesToCopy = [
   { src: 'src/manifest.json', dest: 'dist/manifest.json' },
-  { src: 'src/assets/clocklock_logo.svg', dest: 'dist/assets/clocklock_logo.svg' },
   {
     src: 'src/assets/clocklock_logo_solid_16.png',
     dest: 'dist/assets/clocklock_logo_solid_16.png',

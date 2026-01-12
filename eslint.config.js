@@ -41,7 +41,6 @@ export default [
           varsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
@@ -51,6 +50,24 @@ export default [
           'ts-check': false,
         },
       ],
+    },
+  },
+  // Type-aware linting for src files
+  {
+    files: ['src/**/*.ts'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      ...tseslint.configs['recommended-type-checked'].rules,
     },
   },
   {

@@ -13,7 +13,6 @@
 
   let sites: SiteConfig[] = [];
   let selectedId: string = '';
-  let isLoading = true;
 
   onMount(async () => {
     await clockLock.init();
@@ -21,7 +20,6 @@
     if (sites.length > 0) {
       selectedId = sites[0].id;
     }
-    isLoading = false;
   });
 
   function refreshSites() {
@@ -40,7 +38,6 @@
   let blockUnit: 'seconds' | 'minutes' | 'hours' = 'seconds';
 
   $: selectedIndex = sites.findIndex((s) => s.id === selectedId);
-  $: selectedSite = selectedIndex === -1 ? undefined : sites[selectedIndex];
 
   function convertFromSeconds(seconds: number, unit: 'seconds' | 'minutes' | 'hours'): number {
     if (unit === 'minutes') return Math.round((seconds / 60) * 100) / 100;

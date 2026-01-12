@@ -15,36 +15,35 @@ export class InMemoryStorage implements Storage {
     }
   }
 
-  async load(): Promise<AppState> {
-    return structuredClone(this.state);
+  load(): Promise<AppState> {
+    return Promise.resolve(structuredClone(this.state));
   }
 
-  async saveRules(rules: Rule[]): Promise<void> {
+  saveRules(rules: Rule[]): Promise<void> {
     this.state.rules = structuredClone(rules);
+    return Promise.resolve();
   }
 
-  async saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
+  saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
     this.state.siteStates = structuredClone(siteStates);
+    return Promise.resolve();
   }
 }
 
 export class BrowserStorage implements Storage {
   async load(): Promise<AppState> {
-    // @ts-ignore - chrome is not defined in test env
     const result = await chrome.storage.local.get(['rules', 'siteStates']);
     return {
-      rules: result.rules || [],
-      siteStates: result.siteStates || {},
+      rules: (result.rules as Rule[] | undefined) ?? [],
+      siteStates: (result.siteStates as Record<string, SiteState> | undefined) ?? {},
     };
   }
 
   async saveRules(rules: Rule[]): Promise<void> {
-    // @ts-ignore
     await chrome.storage.local.set({ rules });
   }
 
   async saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
-    // @ts-ignore
     await chrome.storage.local.set({ siteStates });
   }
 }

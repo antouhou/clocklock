@@ -1,6 +1,18 @@
 // No imports! This script must be self-contained or use dynamic imports.
 // But we won't use dynamic imports to keep things simple and robust across browsers.
 
+type TrackTimeResponse = {
+  blocked: boolean;
+  cooldownRemaining?: number;
+  error?: string;
+};
+
+type GetStatusResponse = {
+  blocked: boolean;
+  cooldownRemaining?: number;
+  trackInBackground?: boolean;
+};
+
 const domain = window.location.hostname.replace(/^www\./, '');
 const CHECK_INTERVAL_MS = 1000;
 let isBlocked = false;
@@ -23,20 +35,19 @@ setInterval(() => {
 
 function trackTime() {
   try {
-    // @ts-ignore
     chrome.runtime.sendMessage(
       {
         type: 'TRACK_TIME',
         payload: { domain, delta: CHECK_INTERVAL_MS },
       },
-      (response) => {
+      (response: TrackTimeResponse) => {
         if (chrome.runtime.lastError) {
           console.error(chrome.runtime.lastError);
           // Background might be waking up
           return;
         }
-        if (response && response.blocked) {
-          blockSite(response.cooldownRemaining || 0);
+        if (response?.blocked) {
+          blockSite(response.cooldownRemaining ?? 0);
         }
       }
     );
@@ -48,24 +59,23 @@ function trackTime() {
 
 function checkStatus() {
   try {
-    // @ts-ignore
     chrome.runtime.sendMessage(
       {
         type: 'GET_STATUS',
         payload: { domain },
       },
-      (response) => {
+      (response: GetStatusResponse) => {
         if (chrome.runtime.lastError) return;
 
-        if (response && response.blocked) {
-          blockSite(response.cooldownRemaining || 0);
+        if (response?.blocked) {
+          blockSite(response.cooldownRemaining ?? 0);
         } else if (isBlocked) {
           // Was blocked, now unblocked
           window.location.reload();
         }
 
         // Update trackInBackground setting from rule
-        if (response && response.trackInBackground !== undefined) {
+        if (response?.trackInBackground !== undefined) {
           trackInBackground = response.trackInBackground;
         }
       }
@@ -175,7 +185,7 @@ function blockSite(cooldownRemaining = 0) {
   document.querySelectorAll('audio').forEach((a) => a.pause());
 }
 
-function formatTime(milliseconds) {
+function formatTime(milliseconds: number) {
   const totalSeconds = Math.ceil(milliseconds / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
