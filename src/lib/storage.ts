@@ -7,25 +7,25 @@ export interface Storage {
 }
 
 export class InMemoryStorage implements Storage {
-    private state: AppState = { rules: [], siteStates: {} };
+  private state: AppState = { rules: [], siteStates: {} };
 
-    constructor(initialState?: AppState) {
-        if (initialState) {
-            this.state = structuredClone(initialState);
-        }
+  constructor(initialState?: AppState) {
+    if (initialState) {
+      this.state = structuredClone(initialState);
     }
+  }
 
-    async load(): Promise<AppState> {
-        return structuredClone(this.state);
-    }
+  async load(): Promise<AppState> {
+    return structuredClone(this.state);
+  }
 
-    async saveRules(rules: Rule[]): Promise<void> {
-        this.state.rules = structuredClone(rules);
-    }
+  async saveRules(rules: Rule[]): Promise<void> {
+    this.state.rules = structuredClone(rules);
+  }
 
-    async saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
-        this.state.siteStates = structuredClone(siteStates);
-    }
+  async saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
+    this.state.siteStates = structuredClone(siteStates);
+  }
 }
 
 export class BrowserStorage implements Storage {
@@ -34,7 +34,7 @@ export class BrowserStorage implements Storage {
     const result = await chrome.storage.local.get(['rules', 'siteStates']);
     return {
       rules: result.rules || [],
-      siteStates: result.siteStates || {}
+      siteStates: result.siteStates || {},
     };
   }
 

@@ -4,8 +4,8 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [svelte()],
-  root: 'src',  // Change root to src to easily access siblings
-  base: './',   // Relative paths for assets
+  root: 'src', // Change root to src to easily access siblings
+  base: './', // Relative paths for assets
   build: {
     outDir: '../dist', // Output to dist (relative to src/)
     emptyOutDir: true,
@@ -17,11 +17,11 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (chunkInfo) => {
-            // Keep main scripts at the root of dist/ or properly nested
-            if (chunkInfo.name === 'background' || chunkInfo.name === 'content') {
-                 return '[name].js';
-            }
-            return 'popup/[name].js';
+          // Keep main scripts at the root of dist/ or properly nested
+          if (chunkInfo.name === 'background' || chunkInfo.name === 'content') {
+            return '[name].js';
+          }
+          return 'popup/[name].js';
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',

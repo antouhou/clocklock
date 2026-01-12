@@ -5,7 +5,7 @@
 <main class="app">
   <header class="header">
     <div class="brand">
-      <img src="../assets/icon-48.svg" alt="ClockLock" class="logo" />
+      <img src="../assets/clocklock_logo_solid_128.png" alt="ClockLock" class="logo" />
       <div class="brandText">
         <h1 class="appTitle">ClockLock</h1>
         <p class="tagline">Set time limits per site.</p>

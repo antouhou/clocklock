@@ -25,12 +25,12 @@
   });
 
   function refreshSites() {
-    sites = clockLock.rules.map(r => ({
+    sites = clockLock.rules.map((r) => ({
       id: r.domain,
       label: r.domain,
       watchSeconds: Math.floor(r.timeLimit / 1000),
       blockSeconds: Math.floor(r.cooldownDuration / 1000),
-      trackInBackground: r.trackInBackground
+      trackInBackground: r.trackInBackground,
     }));
   }
 
@@ -54,8 +54,10 @@
     return Math.round(value);
   }
 
-  $: watchDisplayValue = selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].watchSeconds, watchUnit) : 0;
-  $: blockDisplayValue = selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].blockSeconds, blockUnit) : 0;
+  $: watchDisplayValue =
+    selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].watchSeconds, watchUnit) : 0;
+  $: blockDisplayValue =
+    selectedIndex !== -1 ? convertFromSeconds(sites[selectedIndex].blockSeconds, blockUnit) : 0;
 
   function updateWatchSeconds(value: number) {
     if (selectedIndex !== -1) {
@@ -84,7 +86,7 @@
     if (!trimmed) return;
 
     const id = trimmed.toLowerCase();
-    
+
     // Check if exists in current UI list (which mirrors storage)
     if (sites.some((s) => s.id === id)) {
       selectedId = id;
@@ -93,10 +95,10 @@
     }
 
     const newRule: Rule = {
-        domain: id,
-        timeLimit: 600 * 1000,
-        cooldownDuration: 1800 * 1000,
-        trackInBackground: false
+      domain: id,
+      timeLimit: 600 * 1000,
+      cooldownDuration: 1800 * 1000,
+      trackInBackground: false,
     };
 
     await clockLock.addRule(newRule);
@@ -108,14 +110,14 @@
   async function saveChanges() {
     if (selectedIndex === -1) return;
     const site = sites[selectedIndex];
-    
+
     const rule: Rule = {
-        domain: site.id,
-        timeLimit: site.watchSeconds * 1000,
-        cooldownDuration: site.blockSeconds * 1000,
-        trackInBackground: site.trackInBackground
+      domain: site.id,
+      timeLimit: site.watchSeconds * 1000,
+      cooldownDuration: site.blockSeconds * 1000,
+      trackInBackground: site.trackInBackground,
     };
-    
+
     await clockLock.addRule(rule);
   }
 </script>
@@ -217,7 +219,9 @@
             <span class="unitChevron" aria-hidden="true">▾</span>
           </div>
         </div>
-        <p class="help">How long the site stays blocked after your watch time ends. Set 0 to disable.</p>
+        <p class="help">
+          How long the site stays blocked after your watch time ends. Set 0 to disable.
+        </p>
       </div>
 
       <div class="divider" role="separator" aria-hidden="true"></div>
@@ -276,12 +280,7 @@
 
       <div class="field">
         <label class="checkboxLabel">
-          <input
-            type="checkbox"
-            class="checkbox"
-            disabled
-            checked={false}
-          />
+          <input type="checkbox" class="checkbox" disabled checked={false} />
           <span class="checkboxText">Track time in background tabs</span>
         </label>
         <p class="help">Select a site to edit its limits.</p>
@@ -290,7 +289,9 @@
   </div>
 
   <div class="actions">
-    <button class="button" type="button" on:click={saveChanges} disabled={selectedIndex === -1}>Save</button>
+    <button class="button" type="button" on:click={saveChanges} disabled={selectedIndex === -1}
+      >Save</button
+    >
   </div>
 </section>
 

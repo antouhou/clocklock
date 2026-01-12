@@ -11,79 +11,85 @@ checkStatus();
 
 // Start loop
 setInterval(() => {
-    // Skip if page is hidden and we shouldn't track background
-    if (document.hidden && !trackInBackground) return;
-    
-    if (isBlocked) {
-        checkStatus();
-    } else {
-        trackTime();
-    }
+  // Skip if page is hidden and we shouldn't track background
+  if (document.hidden && !trackInBackground) return;
+
+  if (isBlocked) {
+    checkStatus();
+  } else {
+    trackTime();
+  }
 }, CHECK_INTERVAL_MS);
 
 function trackTime() {
-    try {
-        // @ts-ignore
-        chrome.runtime.sendMessage({ 
-            type: 'TRACK_TIME', 
-            payload: { domain, delta: CHECK_INTERVAL_MS } 
-        }, (response) => {
-            if (chrome.runtime.lastError) {
-                console.error(chrome.runtime.lastError);
-                // Background might be waking up
-                return;
-            }
-            if (response && response.blocked) {
-                blockSite(response.cooldownRemaining || 0);
-            }
-        });
-    } catch (e) {
-        console.error(e);
-        // Extension Context invalidated etc.
-    }
+  try {
+    // @ts-ignore
+    chrome.runtime.sendMessage(
+      {
+        type: 'TRACK_TIME',
+        payload: { domain, delta: CHECK_INTERVAL_MS },
+      },
+      (response) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          // Background might be waking up
+          return;
+        }
+        if (response && response.blocked) {
+          blockSite(response.cooldownRemaining || 0);
+        }
+      }
+    );
+  } catch (e) {
+    console.error(e);
+    // Extension Context invalidated etc.
+  }
 }
 
 function checkStatus() {
-    try {
-        // @ts-ignore
-        chrome.runtime.sendMessage({ 
-            type: 'GET_STATUS', 
-            payload: { domain } 
-        }, (response) => {
-            if (chrome.runtime.lastError) return;
-            
-            if (response && response.blocked) {
-                blockSite(response.cooldownRemaining || 0);
-            } else if (isBlocked) {
-                // Was blocked, now unblocked
-                window.location.reload();
-            }
-            
-            // Update trackInBackground setting from rule
-            if (response && response.trackInBackground !== undefined) {
-                trackInBackground = response.trackInBackground;
-            }
-        });
-    } catch (e) {
-        console.error(e);
-        // Context invalidated
-    }
+  try {
+    // @ts-ignore
+    chrome.runtime.sendMessage(
+      {
+        type: 'GET_STATUS',
+        payload: { domain },
+      },
+      (response) => {
+        if (chrome.runtime.lastError) return;
+
+        if (response && response.blocked) {
+          blockSite(response.cooldownRemaining || 0);
+        } else if (isBlocked) {
+          // Was blocked, now unblocked
+          window.location.reload();
+        }
+
+        // Update trackInBackground setting from rule
+        if (response && response.trackInBackground !== undefined) {
+          trackInBackground = response.trackInBackground;
+        }
+      }
+    );
+  } catch (e) {
+    console.error(e);
+    // Context invalidated
+  }
 }
 
 function blockSite(cooldownRemaining = 0) {
-    if (document.body.getAttribute('data-clocklock-blocked') === 'true') {
-        isBlocked = true;
-        // Update existing timer if present
-        const existingTimer = document.getElementById('clocklock-timer');
-        if (existingTimer && cooldownRemaining > 0) {
-            existingTimer.textContent = formatTime(cooldownRemaining);
-        }
-        return;
+  if (document.body.getAttribute('data-clocklock-blocked') === 'true') {
+    isBlocked = true;
+    // Update existing timer if present
+    const existingTimer = document.getElementById('clocklock-timer');
+    if (existingTimer && cooldownRemaining > 0) {
+      existingTimer.textContent = formatTime(cooldownRemaining);
     }
+    return;
+  }
 
-    // Inject shared design tokens
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
+  // Inject shared design tokens
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
         :root {
             --bg: #0b0e11;
             --surface: #181a20;
@@ -102,8 +108,8 @@ function blockSite(cooldownRemaining = 0) {
         }
     `;
 
-    const container = document.createElement('div');
-    container.style.cssText = `
+  const container = document.createElement('div');
+  container.style.cssText = `
         position: fixed;
         top: 0;
         left: 0;
@@ -122,19 +128,19 @@ function blockSite(cooldownRemaining = 0) {
         -moz-osx-font-smoothing: grayscale;
     `;
 
-    const heading = document.createElement('h1');
-    heading.textContent = "⏱️ Time's up!";
-    heading.style.cssText = `
+  const heading = document.createElement('h1');
+  heading.textContent = "⏱️ Time's up!";
+  heading.style.cssText = `
         margin: 0;
         font-size: 2rem;
         font-weight: 750;
         letter-spacing: 0.2px;
         color: var(--accent);
     `;
-    
-    const text = document.createElement('p');
-    text.textContent = `You've reached your limit for ${domain}. Take a break!`;
-    text.style.cssText = `
+
+  const text = document.createElement('p');
+  text.textContent = `You've reached your limit for ${domain}. Take a break!`;
+  text.style.cssText = `
         margin: 0;
         font-size: 1rem;
         color: var(--muted);
@@ -143,10 +149,10 @@ function blockSite(cooldownRemaining = 0) {
         line-height: 1.5;
     `;
 
-    const timer = document.createElement('div');
-    timer.id = 'clocklock-timer';
-    timer.textContent = formatTime(cooldownRemaining);
-    timer.style.cssText = `
+  const timer = document.createElement('div');
+  timer.id = 'clocklock-timer';
+  timer.textContent = formatTime(cooldownRemaining);
+  timer.style.cssText = `
         margin-top: calc(var(--space-2) * 2);
         font-size: 3rem;
         font-weight: 700;
@@ -154,26 +160,26 @@ function blockSite(cooldownRemaining = 0) {
         color: var(--text);
         letter-spacing: 0.05em;
     `;
-    
-    container.appendChild(heading);
-    container.appendChild(text);
-    container.appendChild(timer);
 
-    document.head.appendChild(styleSheet);
-    document.body.innerHTML = '';
-    document.body.appendChild(container);
-    document.body.setAttribute('data-clocklock-blocked', 'true');
-    isBlocked = true;
-    
-    document.querySelectorAll('video').forEach(v => v.pause());
-    document.querySelectorAll('audio').forEach(a => a.pause());
+  container.appendChild(heading);
+  container.appendChild(text);
+  container.appendChild(timer);
+
+  document.head.appendChild(styleSheet);
+  document.body.innerHTML = '';
+  document.body.appendChild(container);
+  document.body.setAttribute('data-clocklock-blocked', 'true');
+  isBlocked = true;
+
+  document.querySelectorAll('video').forEach((v) => v.pause());
+  document.querySelectorAll('audio').forEach((a) => a.pause());
 }
 
 function formatTime(milliseconds) {
-    const totalSeconds = Math.ceil(milliseconds / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const totalSeconds = Math.ceil(milliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
