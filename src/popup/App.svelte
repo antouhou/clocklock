@@ -14,6 +14,26 @@
   </header>
 
   <TimeBudgetForm />
+
+  <footer class="footer">
+    <p class="footerText">
+      ClockLock is free and open source. If you found it useful, you can support it with a small
+      donation on
+      <a
+        href="https://github.com/sponsors/antouhou"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link">GitHub</a
+      >
+      or
+      <a
+        href="https://patreon.com/antouhou"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link">Patreon</a
+      >.
+    </p>
+  </footer>
 </main>
 
 <style>
@@ -66,5 +86,29 @@
     font-size: 12px;
     color: var(--muted);
     line-height: 1.2;
+  }
+
+  .footer {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  }
+
+  .footerText {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .link:hover {
+    text-decoration: underline;
   }
 </style>

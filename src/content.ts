@@ -171,9 +171,37 @@ function blockSite(cooldownRemaining = 0) {
         letter-spacing: 0.05em;
     `;
 
+  const footer = document.createElement('div');
+  footer.style.cssText = `
+        position: absolute;
+        bottom: calc(var(--space-3) * 2);
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 500px;
+        padding: 0 calc(var(--space-2) * 2);
+    `;
+
+  const footerText = document.createElement('p');
+  footerText.style.cssText = `
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        color: var(--muted);
+        text-align: center;
+    `;
+  footerText.innerHTML = `
+        ClockLock is free and open source. If you found it useful, you can support it with a small donation on
+        <a href="https://github.com/sponsors/antouhou" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">GitHub</a>
+        or
+        <a href="https://patreon.com/antouhou" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">Patreon</a>.
+    `;
+
+  footer.appendChild(footerText);
+
   container.appendChild(heading);
   container.appendChild(text);
   container.appendChild(timer);
+  container.appendChild(footer);
 
   document.head.appendChild(styleSheet);
   document.body.innerHTML = '';
