@@ -1,5 +1,7 @@
 ## Development
 
+The build process requires Node.js 20.0.0 or later.
+
 ```bash
 # Install dependencies
 npm install

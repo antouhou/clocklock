@@ -4,7 +4,7 @@ ClockLock is an browser extension that let you set up cooldown periods afetr you
 too long. For example, you can set up a rule that after you've spent 20 minutes on YouTube, you can't
 open it for an hour.
 
-The project uses Svelte 5 and TypeScript. Main entrypoint is `src/popup/App.svelte`.
+The project uses Svelte 5 and TypeScript. The build process requires Node.js 20.0.0 or later. Main entrypoint is `src/popup/App.svelte`.
 If you want to contribute to this project, please follow a set of simple rules:
 
 ## Coding Style
