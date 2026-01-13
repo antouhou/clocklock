@@ -34,8 +34,8 @@
 
   let isAdding = false;
   let newSiteLabel = '';
-  let watchUnit: 'seconds' | 'minutes' | 'hours' = 'seconds';
-  let blockUnit: 'seconds' | 'minutes' | 'hours' = 'seconds';
+  let watchUnit: 'seconds' | 'minutes' | 'hours' = 'minutes';
+  let blockUnit: 'seconds' | 'minutes' | 'hours' = 'minutes';
 
   $: selectedIndex = sites.findIndex((s) => s.id === selectedId);
 
