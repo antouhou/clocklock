@@ -5,9 +5,9 @@
 <main class="app">
   <header class="header">
     <div class="brand">
-      <img src="../assets/icon-48.svg" alt="TubeLock" class="logo" />
+      <img src="../assets/clocklock_logo_solid_128.png" alt="ClockLock" class="logo" />
       <div class="brandText">
-        <h1 class="appTitle">TubeLock</h1>
+        <h1 class="appTitle">ClockLock</h1>
         <p class="tagline">Set time limits per site.</p>
       </div>
     </div>
@@ -16,33 +16,31 @@
   <TimeBudgetForm />
 
   <footer class="footer">
-    <span class="footerText">Settings UI only</span>
+    <p class="footerText">
+      ClockLock is free and open source. If you found it useful, you can support it with a small
+      donation on
+      <a
+        href="https://github.com/sponsors/antouhou"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link">GitHub</a
+      >
+      or
+      <a href="https://patreon.com/antouhou" target="_blank" rel="noopener noreferrer" class="link"
+        >Patreon</a
+      >.
+    </p>
   </footer>
 </main>
 
 <style>
-  :global(:root) {
-    --bg: #0b1220;
-    --surface: #0f1b2e;
-    --text: rgba(255, 255, 255, 0.92);
-    --muted: rgba(255, 255, 255, 0.68);
-    --border: rgba(255, 255, 255, 0.14);
-    --accent: #60a5fa;
-    --radius-lg: 14px;
-    --radius-md: 12px;
-    --shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.22);
-  }
-
-  :global(body) {
-    margin: 0;
-    background: radial-gradient(1200px 420px at 30% 0%, rgba(96, 165, 250, 0.18), transparent 55%),
-      radial-gradient(900px 420px at 90% 30%, rgba(37, 99, 235, 0.18), transparent 55%),
-      var(--bg);
-    color: var(--text);
+  :global(*:focus-visible) {
+    outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+    outline-offset: 2px;
   }
 
   .app {
-    padding: 14px;
+    padding: var(--space-3);
     display: grid;
     gap: 12px;
   }
@@ -64,7 +62,7 @@
     height: 34px;
     flex: 0 0 auto;
     border-radius: 10px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
   }
 
   .brandText {
@@ -88,13 +86,26 @@
   }
 
   .footer {
-    display: flex;
-    justify-content: center;
-    padding-top: 2px;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
   }
 
   .footerText {
+    margin: 0;
     font-size: 11px;
-    color: color-mix(in srgb, var(--muted) 80%, transparent);
+    line-height: 1.4;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .link:hover {
+    text-decoration: underline;
   }
 </style>

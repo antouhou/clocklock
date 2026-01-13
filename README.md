@@ -1,43 +1,28 @@
-# TubeLock
+# ClockLock
 
-A browser extension built with Svelte 5 and TypeScript.
+ClockLock is a browser extension that lets you set up cooldown periods after you've used a website for
+too long. For example, you can set up a rule that after you've spent 20 minutes on YouTube, you can't
+open it for an hour.
 
-## Development
+## Contributing
+
+For contribution guidelines, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+How to install and load the extension, please refer to the [DEVELOPMENT.md](DEVELOPMENT.md) file.
+
+## Building the extension from source
+
+The build process requires Node.js 20.0.0 or later. The extension uses Svelte, TypeScript and Vite.
+
+### Install dependencies
 
 ```bash
-# Install dependencies
-npm install
+npm ci
+```
 
-# Build the extension
+### Build
+
+Build command produces a `./dist` folder with the compiled extension and a `./clocklock.zip` file with the packaged extension.
+
+```bash
 npm run build
-
-# Build in watch mode (for development)
-npm run dev
-```
-
-## Loading the Extension
-
-### Chrome
-
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable "Developer mode" (toggle in top right)
-3. Click "Load unpacked"
-4. Select the `dist` folder from this project
-
-### Firefox
-
-1. Open Firefox and go to `about:debugging#/runtime/this-firefox`
-2. Click "Load Temporary Add-on..."
-3. Select the `dist/manifest.json` file
-
-## Project Structure
-
-```
-src/
-├── assets/          # Extension icons
-├── popup/           # Popup UI (Svelte app)
-│   ├── index.html   # Popup entry point
-│   ├── main.ts      # Svelte mount point
-│   └── App.svelte   # Main popup component
-└── manifest.json    # Extension manifest
 ```

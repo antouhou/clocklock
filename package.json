@@ -5,16 +5,33 @@
   "type": "module",
   "scripts": {
     "dev": "vite build --watch && node scripts/copy-assets.js",
-    "build": "vite build && node scripts/copy-assets.js",
+    "build": "vite build && node scripts/copy-assets.js && cd ./dist && zip -r ../clocklock.zip .",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "rebuild": "rm -rf dist && npm run build"
+    "typecheck": "tsc --noEmit",
+    "rebuild": "rm -rf dist && npm run build",
+    "zip:source": "git archive --format=zip --output=clocklock-source.zip HEAD",
+    "test": "vitest",
+    "lint": "npm run format:check && npm run typecheck && eslint .",
+    "lint:fix": "eslint . --fix && npm run format",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@tsconfig/svelte": "^5.0.4",
+    "@types/chrome": "^0.1.33",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.14.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-svelte": "^3.4.1",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
+    "svelte-eslint-parser": "^1.4.1",
     "typescript": "^5.6.0",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^4.0.16"
   }
 }
