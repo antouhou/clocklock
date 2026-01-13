@@ -16,7 +16,7 @@ The build process requires Node.js 20.0.0 or later. The extension uses Svelte, T
 ### Install dependencies
 
 ```bash
-npm install
+npm ci
 ```
 
 ### Build

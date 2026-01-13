@@ -26,11 +26,8 @@
         class="link">GitHub</a
       >
       or
-      <a
-        href="https://patreon.com/antouhou"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="link">Patreon</a
+      <a href="https://patreon.com/antouhou" target="_blank" rel="noopener noreferrer" class="link"
+        >Patreon</a
       >.
     </p>
   </footer>

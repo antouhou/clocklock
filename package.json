@@ -9,9 +9,10 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "typecheck": "tsc --noEmit",
     "rebuild": "rm -rf dist && npm run build",
+    "zip:source": "git archive --format=zip --output=clocklock-source.zip HEAD",
     "test": "vitest",
-    "lint": "tsc --noEmit && eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "npm run format:check && npm run typecheck && eslint .",
+    "lint:fix": "eslint . --fix && npm run format",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

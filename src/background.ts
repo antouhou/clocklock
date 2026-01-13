@@ -26,9 +26,9 @@ chrome.storage.onChanged.addListener((changes, area) => {
 // Listen for messages from content scripts
 chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
   console.log(`[ClockLock] Received message from ${sender.tab?.url}:`, message);
-  
+
   const msg = message as Message;
-  
+
   if (msg.type === 'TRACK_TIME') {
     const { domain, delta } = msg.payload;
     console.log(`[ClockLock] Received TRACK_TIME message from ${domain}...`);
