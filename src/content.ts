@@ -132,6 +132,7 @@ function blockSite(cooldownRemaining = 0) {
         align-items: center;
         justify-content: center;
         gap: calc(var(--space-2) * 1.5);
+        font-size: 16px;
         z-index: 2147483647;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -142,7 +143,7 @@ function blockSite(cooldownRemaining = 0) {
   heading.textContent = "⏱️ Time's up!";
   heading.style.cssText = `
         margin: 0;
-        font-size: 2rem;
+        font-size: 2em;
         font-weight: 750;
         letter-spacing: 0.2px;
         color: var(--accent);
@@ -152,7 +153,7 @@ function blockSite(cooldownRemaining = 0) {
   text.textContent = `You've reached your limit for ${domain}. Take a break!`;
   text.style.cssText = `
         margin: 0;
-        font-size: 1rem;
+        font-size: 1em;
         color: var(--muted);
         text-align: center;
         max-width: 400px;
@@ -164,7 +165,7 @@ function blockSite(cooldownRemaining = 0) {
   timer.textContent = formatTime(cooldownRemaining);
   timer.style.cssText = `
         margin-top: calc(var(--space-2) * 2);
-        font-size: 3rem;
+        font-size: 3em;
         font-weight: 700;
         font-variant-numeric: tabular-nums;
         color: var(--text);
@@ -184,7 +185,7 @@ function blockSite(cooldownRemaining = 0) {
   const footerText = document.createElement('p');
   footerText.style.cssText = `
         margin: 0;
-        font-size: 0.875rem;
+        font-size: 0.875em;
         line-height: 1.5;
         color: var(--muted);
         text-align: center;
