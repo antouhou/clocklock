@@ -189,12 +189,29 @@ function blockSite(cooldownRemaining = 0) {
         color: var(--muted);
         text-align: center;
     `;
-  footerText.innerHTML = `
-        ClockLock is free and open source. If you found it useful, you can support it with a small donation on
-        <a href="https://github.com/sponsors/antouhou" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">GitHub</a>
-        or
-        <a href="https://patreon.com/antouhou" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 600;">Patreon</a>.
-    `;
+  
+  // Create text and links using DOM methods (safer than innerHTML)
+  footerText.appendChild(document.createTextNode('ClockLock is free and open source. If you found it useful, you can support it with a small donation on '));
+  
+  const githubLink = document.createElement('a');
+  githubLink.href = 'https://github.com/sponsors/antouhou';
+  githubLink.target = '_blank';
+  githubLink.rel = 'noopener noreferrer';
+  githubLink.style.cssText = 'color: var(--accent); text-decoration: none; font-weight: 600;';
+  githubLink.textContent = 'GitHub';
+  footerText.appendChild(githubLink);
+  
+  footerText.appendChild(document.createTextNode(' or '));
+  
+  const patreonLink = document.createElement('a');
+  patreonLink.href = 'https://patreon.com/antouhou';
+  patreonLink.target = '_blank';
+  patreonLink.rel = 'noopener noreferrer';
+  patreonLink.style.cssText = 'color: var(--accent); text-decoration: none; font-weight: 600;';
+  patreonLink.textContent = 'Patreon';
+  footerText.appendChild(patreonLink);
+  
+  footerText.appendChild(document.createTextNode('.'));
 
   footer.appendChild(footerText);
 
@@ -204,8 +221,7 @@ function blockSite(cooldownRemaining = 0) {
   container.appendChild(footer);
 
   document.head.appendChild(styleSheet);
-  document.body.innerHTML = '';
-  document.body.appendChild(container);
+  document.body.replaceChildren(container);
   document.body.setAttribute('data-clocklock-blocked', 'true');
   isBlocked = true;
 
