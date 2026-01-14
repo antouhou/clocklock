@@ -4,10 +4,13 @@ export interface Storage {
   load(): Promise<AppState>;
   saveRules(rules: Rule[]): Promise<void>;
   saveSiteStates(siteStates: Record<string, SiteState>): Promise<void>;
+  saveSelectedSite(siteId: string): Promise<void>;
+  loadSelectedSite(): Promise<string | null>;
 }
 
 export class InMemoryStorage implements Storage {
   private state: AppState = { rules: [], siteStates: {} };
+  private selectedSite: string | null = null;
 
   constructor(initialState?: AppState) {
     if (initialState) {
@@ -28,6 +31,15 @@ export class InMemoryStorage implements Storage {
     this.state.siteStates = structuredClone(siteStates);
     return Promise.resolve();
   }
+
+  saveSelectedSite(siteId: string): Promise<void> {
+    this.selectedSite = siteId;
+    return Promise.resolve();
+  }
+
+  loadSelectedSite(): Promise<string | null> {
+    return Promise.resolve(this.selectedSite);
+  }
 }
 
 export class BrowserStorage implements Storage {
@@ -45,5 +57,14 @@ export class BrowserStorage implements Storage {
 
   async saveSiteStates(siteStates: Record<string, SiteState>): Promise<void> {
     await chrome.storage.local.set({ siteStates });
+  }
+
+  async saveSelectedSite(siteId: string): Promise<void> {
+    await chrome.storage.local.set({ selectedSite: siteId });
+  }
+
+  async loadSelectedSite(): Promise<string | null> {
+    const result = await chrome.storage.local.get(['selectedSite']);
+    return (result.selectedSite as string | undefined) ?? null;
   }
 }

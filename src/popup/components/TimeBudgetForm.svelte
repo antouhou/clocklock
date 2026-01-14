@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { clockLock } from '../../lib/instance.js';
+  import { clockLock, storage } from '../../lib/instance.js';
   import type { Rule } from '../../lib/types.js';
 
   type SiteConfig = {
@@ -17,7 +17,12 @@
   onMount(async () => {
     await clockLock.init();
     refreshSites();
-    if (sites.length > 0) {
+
+    // Load the previously selected site
+    const savedSelectedSite = await storage.loadSelectedSite();
+    if (savedSelectedSite && sites.some((s) => s.id === savedSelectedSite)) {
+      selectedId = savedSelectedSite;
+    } else if (sites.length > 0) {
       selectedId = sites[0].id;
     }
   });
@@ -38,6 +43,11 @@
   let blockUnit: 'seconds' | 'minutes' | 'hours' = 'minutes';
 
   $: selectedIndex = sites.findIndex((s) => s.id === selectedId);
+
+  // Save the selected site whenever it changes
+  $: if (selectedId) {
+    storage.saveSelectedSite(selectedId);
+  }
 
   function convertFromSeconds(seconds: number, unit: 'seconds' | 'minutes' | 'hours'): number {
     if (unit === 'minutes') return Math.round((seconds / 60) * 100) / 100;
