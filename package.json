@@ -1,5 +1,5 @@
 {
-  "name": "tubelock",
+  "name": "clocklock",
   "version": "1.1.0",
   "private": true,
   "type": "module",
@@ -12,9 +12,9 @@
     "zip:source": "git archive --format=zip --output=clocklock-source.zip HEAD",
     "test": "vitest",
     "lint": "npm run format:check && npm run typecheck && eslint .",
-    "lint:fix": "eslint . --fix && npm run format",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "fix": "eslint . --fix && npm run format"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.0",

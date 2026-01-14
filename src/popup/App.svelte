@@ -17,17 +17,12 @@
 
   <footer class="footer">
     <p class="footerText">
-      ClockLock is free and open source. If you found it useful, you can support it with a small
-      donation on
+      ClockLock is free and open source. If you found it useful, you can check it out on
       <a
-        href="https://github.com/sponsors/antouhou"
+        href="https://github.com/antouhou/clocklock"
         target="_blank"
         rel="noopener noreferrer"
         class="link">GitHub</a
-      >
-      or
-      <a href="https://patreon.com/antouhou" target="_blank" rel="noopener noreferrer" class="link"
-        >Patreon</a
       >.
     </p>
   </footer>
