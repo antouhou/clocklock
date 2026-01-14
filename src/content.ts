@@ -194,27 +194,17 @@ function blockSite(cooldownRemaining = 0) {
   // Create text and links using DOM methods (safer than innerHTML)
   footerText.appendChild(
     document.createTextNode(
-      'ClockLock is free and open source. If you found it useful, you can support it with a small donation on '
+      'ClockLock is free and open source. If you found it useful, you can check it out on '
     )
   );
 
   const githubLink = document.createElement('a');
-  githubLink.href = 'https://github.com/sponsors/antouhou';
+  githubLink.href = 'https://github.com/antouhou/clocklock';
   githubLink.target = '_blank';
   githubLink.rel = 'noopener noreferrer';
   githubLink.style.cssText = 'color: var(--accent); text-decoration: none; font-weight: 600;';
   githubLink.textContent = 'GitHub';
   footerText.appendChild(githubLink);
-
-  footerText.appendChild(document.createTextNode(' or '));
-
-  const patreonLink = document.createElement('a');
-  patreonLink.href = 'https://patreon.com/antouhou';
-  patreonLink.target = '_blank';
-  patreonLink.rel = 'noopener noreferrer';
-  patreonLink.style.cssText = 'color: var(--accent); text-decoration: none; font-weight: 600;';
-  patreonLink.textContent = 'Patreon';
-  footerText.appendChild(patreonLink);
 
   footerText.appendChild(document.createTextNode('.'));
 
