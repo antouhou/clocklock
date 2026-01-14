@@ -28,13 +28,15 @@
   });
 
   function refreshSites() {
-    sites = clockLock.rules.map((r) => ({
-      id: r.domain,
-      label: r.domain,
-      watchSeconds: Math.floor(r.timeLimit / 1000),
-      blockSeconds: Math.floor(r.cooldownDuration / 1000),
-      trackInBackground: r.trackInBackground,
-    }));
+    sites = clockLock.rules
+      .map((r) => ({
+        id: r.domain,
+        label: r.domain,
+        watchSeconds: Math.floor(r.timeLimit / 1000),
+        blockSeconds: Math.floor(r.cooldownDuration / 1000),
+        trackInBackground: r.trackInBackground,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
   let isAdding = false;
